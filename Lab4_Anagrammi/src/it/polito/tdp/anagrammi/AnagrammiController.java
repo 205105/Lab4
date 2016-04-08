@@ -22,6 +22,11 @@ import javafx.scene.text.Text;
 
 public class AnagrammiController {
 
+	Dizionario d=new Dizionario();
+    private char[] caratteri;
+    private String anagrammi="";
+    List<Text> testo=new LinkedList<Text>();
+	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -42,31 +47,14 @@ public class AnagrammiController {
 
     @FXML
     void doCalcola(ActionEvent event) {
-    
     	String parola=txtParola.getText();
     	ric(parola, 0);
-    	//txtRisultato.setText(anagrammi);
-    	Dizionario d=new Dizionario();
     	List<RichWord> r=new LinkedList<RichWord>();
-    		d.loadDictionary();
-    		r=d.spellCheckText(this.dividiTesto(anagrammi));
+    		r=d.spellCheckText(d.dividiTesto(anagrammi));
     		this.stampe(r);
     	}
-
-	public List<String> dividiTesto(String s){
-	List<String> parole=new LinkedList<String>();
-	StringTokenizer st=new StringTokenizer(anagrammi,"\n"); //bisogna poi inserire la divisione per punto e virgola ragionando che sono l'ultimo carattere di una parola, si dovrebbe poter usare il metodo dello string tokenizer iscontains o una roba cosi
-	while(st.hasMoreTokens()){
-		parole.add(st.nextToken());
-	}
-	return parole;
-	}
-    
-    private char[] caratteri;
-    private String anagrammi="";
     
 	public void ric(String p, int pos){
-		
 		if(pos==p.length()){
 			anagrammi+=p+"\n";
 			System.out.print(p+"\n");
@@ -81,15 +69,11 @@ public class AnagrammiController {
 		}
 	}
 	
-	List<Text> testo=new LinkedList<Text>();
-	
 	void stampe(List<RichWord> r){
-    	boolean check=true;
     	//String ris="";
     	for(RichWord t: r){
     		Text y=new Text();
     		if(t.isCorretta()==false){
-    			check=false;
     			String s=t.toString()+"\n";
     			y.setText(s);
     			y.setFill(javafx.scene.paint.Color.RED);
